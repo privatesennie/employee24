@@ -86,8 +86,6 @@
 .search-container {
   position: relative;
   z-index: 5;
-  padding: 0 20px;
-  margin-top: 10px;
 }
 
 .search-bar {
@@ -118,10 +116,8 @@
   opacity: 0.7;
 }
 
-/* Central AI Chat Section */
 .ai-chat-section {
-  padding: 0 20px;
-  margin-top: 24px;
+  /* spacing handled by .main-grid gap */
 }
 
 .ai-chat-card {
@@ -220,19 +216,20 @@
   box-shadow: 0 4px 12px rgba(3, 54, 106, 0.2);
 }
 
-.content {
+/* Main Grid - mobile default: single column vertical flow */
+.main-grid {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 20px 80px;
+  box-sizing: border-box;
+  gap: 20px;
   position: relative;
   z-index: 2;
-  margin-top: auto;
-  padding: 20px;
-  padding-bottom: 40px;
 }
 
 .content {
-  position: relative;
-  z-index: 2;
-  margin-top: auto;
-  padding-bottom: 40px;
+  display: contents; /* on mobile, behaves as if wrapper doesn't exist */
 }
 
 /* Glass Card */
@@ -1023,22 +1020,96 @@
    ========================================= */
 
 @media (min-width: 724px) {
-  /* Center and constrain main content areas */
-  .header,
-  .search-container,
-  .ai-chat-section,
-  .content,
-  .stepper,
-  .diagnosis-content,
-  .auth-content,
-  .result-content {
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
+  /* App-level full-width flex layout */
+  .app-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Header stretches full width with padding */
+  .header {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px 48px;
+    box-sizing: border-box;
+  }
+
+  /* Two-column grid wrapper for main content */
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 24px;
+    width: 100%;
+    max-width: 1000px;
+    padding: 0 48px 80px;
+    box-sizing: border-box;
+    margin: 0 auto;
+  }
+
+  /* Search bar spans both columns */
+  .search-container {
+    grid-column: 1 / -1;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
     width: 100%;
   }
 
-  /* Adjust Chatbot FAB position and size */
+  /* AI chat card spans both columns */
+  .ai-chat-section {
+    grid-column: 1 / -1;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  /* Summary glass card left column */
+  .glass-card {
+    margin-bottom: 0;
+  }
+
+  /* Content area: grid layout inside */
+  .content {
+    display: contents; /* dissolve into the grid */
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Filter sections take one column each */
+  .filter-section {
+    grid-column: span 1;
+  }
+
+  /* Filter buttons wrap naturally */
+  .filter-row {
+    flex-wrap: wrap;
+  }
+
+  /* Filter button sizing bump */
+  .filter-btn {
+    padding: 12px 20px;
+    font-size: 15px;
+  }
+
+  /* Summary container horizontal gap increase */
+  .summary-container {
+    gap: 32px;
+  }
+
+  /* AI chat card padding bump */
+  .ai-chat-card {
+    padding: 28px 32px;
+  }
+
+  /* Section title size */
+  .section-title {
+    font-size: 20px;
+  }
+
+  /* Chatbot FAB */
   .chatbot-fab {
     right: 40px;
     bottom: 40px;
@@ -1046,51 +1117,64 @@
     height: 80px;
     border-radius: 26px;
   }
-  
+
   .chatbot-fab svg {
     width: 44px;
     height: 44px;
   }
 
   .chatbot-tooltip {
-    right: 100px; /* 80px width + 20px gap */
+    right: 100px;
     font-size: 15px;
     padding: 18px 24px;
   }
 }
 
 @media (min-width: 1280px) {
-  /* Expand max-width further for desktop */
-  .header,
-  .search-container,
-  .ai-chat-section,
-  .content,
-  .stepper,
-  .diagnosis-content,
-  .auth-content,
-  .result-content {
-    max-width: 1000px;
+  /* Wider max-width for desktop */
+  .main-grid {
+    max-width: 1280px;
+    padding: 0 80px 100px;
+    gap: 32px;
   }
 
-  /* Desktop layout optimizations */
-  .filter-row {
-    flex-wrap: wrap;
-    justify-content: flex-start;
+  .header {
+    padding: 24px 80px;
+    max-width: 100%;
   }
 
   .ai-chat-card {
-    padding: 32px 40px;
+    padding: 36px 48px;
   }
-  
+
   .diagnosis-card {
     padding: 40px;
   }
 
   .summary-container {
-    gap: 40px;
+    gap: 48px;
   }
 
-  /* Make Chatbot FAB even larger for desktop */
+  .summary-value {
+    font-size: 28px;
+  }
+
+  .filter-btn {
+    padding: 14px 24px;
+    font-size: 15px;
+    border-radius: 14px;
+  }
+
+  .section-title {
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+
+  .ai-chat-title {
+    font-size: 26px;
+  }
+
+  /* Desktop Chatbot FAB */
   .chatbot-fab {
     right: 60px;
     bottom: 60px;
@@ -1098,14 +1182,14 @@
     height: 90px;
     border-radius: 28px;
   }
-  
+
   .chatbot-fab svg {
     width: 50px;
     height: 50px;
   }
 
   .chatbot-tooltip {
-    right: 114px; /* 90px width + 24px gap */
+    right: 114px;
     font-size: 16px;
     padding: 20px 28px;
   }
