@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Search, Menu, LogIn, UserPlus, Sparkles, Bot, X, ChevronRight } from 'lucide-react'
+import { Search, Menu, LogIn, UserPlus, Sparkles, Bot, X, ChevronRight, Lock, ShieldCheck } from 'lucide-react'
 import './App.css'
 import Diagnosis from './Diagnosis'
 
@@ -10,6 +10,7 @@ function App() {
   const [showApplicationPopup, setShowApplicationPopup] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
   const [showLoginPopup, setShowLoginPopup] = useState(false)
+  const [showSignUpPopup, setShowSignUpPopup] = useState(false)
   const [showJobSearchChoice, setShowJobSearchChoice] = useState(false)
   const [showVocationalGuide, setShowVocationalGuide] = useState(false)
   const [showJobPostings, setShowJobPostings] = useState(false)
@@ -108,7 +109,7 @@ function App() {
               <LogIn size={20} />
               <span>로그인</span>
             </button>
-            <button className="icon-btn">
+            <button className="icon-btn" onClick={() => setShowSignUpPopup(true)}>
               <UserPlus size={20} />
               <span>회원가입</span>
             </button>
@@ -666,6 +667,65 @@ function App() {
                 ))}
               </div>
               <button className="primary-btn vibe-btn" style={{ marginTop: '20px' }} onClick={() => setShowEduPostings(false)}>전체 교육 보러가기</button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* 회원가입 팝업 */}
+      {showSignUpPopup && (
+        <div className="modal-overlay" onClick={() => setShowSignUpPopup(false)}>
+          <div className="modal-content animate-scale-in" onClick={e => e.stopPropagation()} style={{ maxWidth: '440px' }}>
+            <div className="modal-header">
+              <h2 className="modal-title">회원가입</h2>
+              <button className="close-btn" onClick={() => setShowSignUpPopup(false)}>
+                <X size={24} />
+              </button>
+            </div>
+            <div className="modal-body">
+              <p className="modal-subtitle" style={{ marginBottom: '24px', color: '#666', fontSize: '14px' }}>
+                고용24의 다양한 서비스를 위해<br/>회원 정보를 입력하고 본인 확인을 진행해주세요.
+              </p>
+              
+              <div className="auth-form" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div className="input-group">
+                  <label style={{ fontSize: '13px', fontWeight: '800', color: '#03366A', marginBottom: '6px', display: 'block' }}>아이디</label>
+                  <div className="input-wrapper" style={{ position: 'relative' }}>
+                    <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#03366A', opacity: 0.5 }}>
+                      <Search size={18} />
+                    </div>
+                    <input type="text" placeholder="아이디 입력 (6자 이상)" className="vibe-input" style={{ paddingLeft: '48px', width: '100%', height: '50px', borderRadius: '12px', border: '1px solid #eee', outline: 'none' }} />
+                  </div>
+                </div>
+
+                <div className="input-group">
+                  <label style={{ fontSize: '13px', fontWeight: '800', color: '#03366A', marginBottom: '6px', display: 'block' }}>비밀번호</label>
+                  <div className="input-wrapper" style={{ position: 'relative' }}>
+                    <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#03366A', opacity: 0.5 }}>
+                      <Lock size={18} />
+                    </div>
+                    <input type="password" placeholder="비밀번호 입력" className="vibe-input" style={{ paddingLeft: '48px', width: '100%', height: '50px', borderRadius: '12px', border: '1px solid #eee', outline: 'none' }} />
+                  </div>
+                </div>
+
+                <div style={{ padding: '20px', background: 'rgba(3, 54, 106, 0.03)', borderRadius: '16px', marginTop: '10px' }}>
+                  <h3 style={{ fontSize: '14px', fontWeight: '800', color: '#333', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <ShieldCheck size={18} color="#03366A" /> 본인 확인
+                  </h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <input type="text" placeholder="이름" style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #eee' }} />
+                    <input type="text" placeholder="생년월일 (예: 900101)" style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #eee' }} />
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <input type="tel" placeholder="휴대폰 번호" style={{ flex: 1, padding: '12px', borderRadius: '8px', border: '1px solid #eee' }} />
+                      <button className="primary-btn" style={{ width: 'auto', padding: '0 16px', fontSize: '12px', height: '44px', background: '#03366A' }}>인증 요청</button>
+                    </div>
+                  </div>
+                </div>
+
+                <button className="primary-btn vibe-btn" style={{ marginTop: '10px', height: '54px' }} onClick={() => {
+                  alert('회원가입이 완료되었습니다.');
+                  setShowSignUpPopup(false);
+                }}>가입 완료</button>
+              </div>
             </div>
           </div>
         </div>
