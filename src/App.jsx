@@ -124,7 +124,7 @@ function App() {
 
       {/* AI Chatbot FAB */}
       <div className="chatbot-fab" onClick={() => setView('diagnosis')}>
-        <div className="chatbot-tooltip">
+        <div className="chatbot-tooltip" onClick={(e) => { e.stopPropagation(); setView('diagnosis'); }}>
           실업급여 수급 대상 여부를 확인해보세요 !
         </div>
         <Bot size={32} strokeWidth={2.2} />

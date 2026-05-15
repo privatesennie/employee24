@@ -587,12 +587,12 @@
 
 .chatbot-tooltip {
   position: absolute;
-  right: 76px; /* Gap from the 60px icon */
+  right: 76px;
   bottom: 0;
   background: var(--primary-color);
   color: white;
   padding: 16px 24px;
-  border-radius: 16px; /* Clean rounded rectangle */
+  border-radius: 16px;
   font-size: 14px;
   font-weight: 700;
   white-space: nowrap;
@@ -607,7 +607,7 @@
   cursor: pointer;
 }
 
-/* Bridging pseudo-element to prevent disappearing during cursor move */
+/* Bridging area so cursor can move from FAB to tooltip */
 .chatbot-tooltip::before {
   content: '';
   position: absolute;
@@ -617,6 +617,7 @@
   height: 100%;
 }
 
+/* Show tooltip on FAB hover, re-enable pointer-events so it's clickable */
 .chatbot-fab:hover .chatbot-tooltip {
   opacity: 1;
   visibility: visible;
@@ -624,7 +625,6 @@
   transform: translateX(0) scale(1);
 }
 
-/* Removing tail for a cleaner rounded rectangle look */
 .chatbot-tooltip::after {
   display: none;
 }
@@ -1038,19 +1038,18 @@
   .main-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto auto;
-    gap: 24px;
+    gap: 28px;
     width: 100%;
     max-width: 1000px;
-    padding: 0 48px 80px;
+    padding: 20px 48px 100px;
     box-sizing: border-box;
     margin: 0 auto;
+    align-items: start;
   }
 
   /* Search bar spans both columns */
   .search-container {
     grid-column: 1 / -1;
-    max-width: 100%;
     padding: 0;
     margin: 0;
     width: 100%;
@@ -1059,28 +1058,34 @@
   /* AI chat card spans both columns */
   .ai-chat-section {
     grid-column: 1 / -1;
-    max-width: 100%;
     padding: 0;
     margin: 0;
     width: 100%;
   }
 
-  /* Summary glass card left column */
-  .glass-card {
-    margin-bottom: 0;
-  }
-
-  /* Content area: grid layout inside */
+  /* content dissolves — children participate in grid directly */
   .content {
-    display: contents; /* dissolve into the grid */
-    max-width: 100%;
+    display: contents;
     padding: 0;
     margin: 0;
   }
 
-  /* Filter sections take one column each */
-  .filter-section {
-    grid-column: span 1;
+  /* Summary card: left column */
+  .glass-card {
+    grid-column: 1;
+    margin-bottom: 0;
+    padding: 28px 24px;
+  }
+
+  /* Filter sections: right column stacked (each takes right side) */
+  .filter-section:nth-of-type(1) {
+    grid-column: 2;
+    grid-row: 3;
+  }
+
+  .filter-section:nth-of-type(2) {
+    grid-column: 2;
+    grid-row: 4;
   }
 
   /* Filter buttons wrap naturally */
