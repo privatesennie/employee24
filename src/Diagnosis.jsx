@@ -56,7 +56,7 @@ function Diagnosis({ onBack }) {
 
   // Result view for step 6
   if (step === 6) {
-    return <Result onBack={() => setStep(4)} />
+    return <Result onBack={() => setStep(4)} onHome={onBack} />
   }
 
   return (
@@ -101,7 +101,7 @@ function Diagnosis({ onBack }) {
                 <button 
                   key={opt} 
                   className={`option-btn ${answer === opt ? 'selected' : ''}`}
-                  onClick={() => setAnswer(opt)}
+                  onClick={() => setAnswer(answer === opt ? null : opt)}
                 >
                   {opt}
                   <div className={`radio-circle ${answer === opt ? 'checked' : ''}`}></div>

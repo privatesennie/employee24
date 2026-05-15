@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { CheckCircle, Home, FileText, ArrowLeft } from 'lucide-react'
 import './App.css'
 
-function Result({ onBack }) {
+function Result({ onBack, onHome }) {
   const [loading, setLoading] = useState(true)
   const [progress, setProgress] = useState(0)
 
@@ -83,7 +83,7 @@ function Result({ onBack }) {
               </div>
             </div>
 
-            <button className="primary-btn vibe-btn" onClick={onBack}>
+            <button className="primary-btn vibe-btn" onClick={onHome}>
               메인으로 돌아가기
             </button>
           </div>
