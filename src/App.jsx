@@ -5,6 +5,7 @@ import Diagnosis from './Diagnosis'
 
 function App() {
   const [view, setView] = useState('main') // 'main' or 'diagnosis'
+  const [showTooltip, setShowTooltip] = useState(false)
 
   const jobFilters = ['지역별', '직종별', '테마별']
   const eduFilters = ['내일배움카드', 'K-디지털 훈련', '정부부처별']
@@ -123,8 +124,16 @@ function App() {
       </div>
 
       {/* AI Chatbot FAB */}
-      <div className="chatbot-fab" onClick={() => setView('diagnosis')}>
-        <div className="chatbot-tooltip" onClick={(e) => { e.stopPropagation(); setView('diagnosis'); }}>
+      <div
+        className="chatbot-fab"
+        onClick={() => setView('diagnosis')}
+        onMouseEnter={() => setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
+      >
+        <div
+          className={`chatbot-tooltip${showTooltip ? ' chatbot-tooltip--visible' : ''}`}
+          onClick={(e) => { e.stopPropagation(); setView('diagnosis'); }}
+        >
           실업급여 수급 대상 여부를 확인해보세요 !
         </div>
         <Bot size={32} strokeWidth={2.2} />

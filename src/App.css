@@ -617,12 +617,12 @@
   height: 100%;
 }
 
-/* Show tooltip on FAB hover, re-enable pointer-events so it's clickable */
-.chatbot-fab:hover .chatbot-tooltip {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transform: translateX(0) scale(1);
+/* Show tooltip via JS state class (avoids CSS animation conflict) */
+.chatbot-tooltip--visible {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: translateX(0) scale(1) !important;
 }
 
 .chatbot-tooltip::after {
