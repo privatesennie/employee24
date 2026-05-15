@@ -25,7 +25,10 @@ function App() {
       onMouseLeave={() => setShowTooltip(false)}
     >
       {/* Tooltip: position absolute, to the left of the wrapper */}
-      <div className={`chatbot-tooltip${showTooltip ? ' chatbot-tooltip--visible' : ''}`}>
+      <div 
+        className={`chatbot-tooltip${showTooltip ? ' chatbot-tooltip--visible' : ''}`}
+        onClick={() => setView('diagnosis')}
+      >
         실업급여 수급 대상 여부를 확인해보세요 !
       </div>
       {/* FAB icon button */}

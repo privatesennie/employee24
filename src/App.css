@@ -398,7 +398,7 @@
 .chatbot-tooltip {
   position: absolute;
   right: calc(100% + 16px); /* always 16px to the left of wrapper edge */
-  bottom: 0;
+  top: 50%;
   background: var(--primary-color);
   color: white;
   padding: 16px 24px;
@@ -410,10 +410,20 @@
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translateX(10px) scale(0.9);
+  transform: translateY(-50%) translateX(10px) scale(0.9);
   transform-origin: right center;
   transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
+}
+
+/* Bridging the gap so hover doesn't break */
+.chatbot-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -16px;
+  width: 16px;
+  height: 100%;
 }
 
 /* Visible state (toggled by React state via class) */
@@ -421,7 +431,7 @@
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translateX(0) scale(1);
+  transform: translateY(-50%) translateX(0) scale(1);
 }
 
 .diagnosis-container {
@@ -623,39 +633,7 @@
   box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
-.chatbot-tooltip {
-  position: fixed;
-  right: 88px;   /* sits to the left of the 60px FAB at right:16px */
-  bottom: 26px;  /* vertically centered with the 60px FAB at bottom:16px */
-  background: var(--primary-color);
-  color: white;
-  padding: 16px 24px;
-  border-radius: 16px;
-  font-size: 14px;
-  font-weight: 700;
-  white-space: nowrap;
-  box-shadow: -10px 10px 30px rgba(3, 54, 106, 0.2);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transform: translateX(10px) scale(0.9);
-  transform-origin: right center;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  z-index: 9999;
-  cursor: pointer;
-}
 
-/* Show tooltip via JS state class */
-.chatbot-tooltip--visible {
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-  transform: translateX(0) scale(1) !important;
-}
-
-.chatbot-tooltip::after {
-  display: none;
-}
 
 /* =========================================
    Result Component Styles (Vibe & Glassmorphism)
