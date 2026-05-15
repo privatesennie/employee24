@@ -12,6 +12,8 @@ function App() {
   const [showLoginPopup, setShowLoginPopup] = useState(false)
   const [showJobSearchChoice, setShowJobSearchChoice] = useState(false)
   const [showVocationalGuide, setShowVocationalGuide] = useState(false)
+  const [showJobPostings, setShowJobPostings] = useState(false)
+  const [showEduPostings, setShowEduPostings] = useState(false)
   const [activeInfoPopup, setActiveInfoPopup] = useState(null) // 'card', 'digital'
   const [activeFilter, setActiveFilter] = useState(null) // 'region', 'job'
   const [filterStep, setFilterStep] = useState(1)
@@ -59,8 +61,8 @@ function App() {
     "출산휴직 ·육아휴직", "기타민원", "고객센터", "마이페이지"
   ]
 
-  const jobFilters = ['지역별', '직종별', '테마별']
-  const eduFilters = ['내일배움카드', 'K-디지털 훈련', '정부부처별']
+  const jobFilters = ['지역별', '직종별']
+  const eduFilters = ['내일배움카드', 'K-디지털 훈련']
   const aiSuggestions = ['실업급여 신청방법', '실업급여 수급 자격 확인', '맞춤 일자리 찾기', '직업훈련 안내']
 
   if (view === 'diagnosis') {
@@ -178,7 +180,7 @@ function App() {
                     130,828<span className="summary-unit">건</span>
                   </div>
                   <div className="summary-footer-btn-wrapper">
-                    <button className="summary-action-btn">확인하러 가기</button>
+                    <button className="summary-action-btn" onClick={() => setShowJobPostings(true)}>확인하러 가기</button>
                   </div>
                 </div>
                 <div className="summary-item">
@@ -187,7 +189,7 @@ function App() {
                     21,877<span className="summary-unit">건</span>
                   </div>
                   <div className="summary-footer-btn-wrapper">
-                    <button className="summary-action-btn">확인하러 가기</button>
+                    <button className="summary-action-btn" onClick={() => setShowEduPostings(true)}>확인하러 가기</button>
                   </div>
                 </div>
               </div>
@@ -593,8 +595,84 @@ function App() {
           </div>
         </div>
       )}
+      {/* 채용공고 팝업 */}
+      {showJobPostings && (
+        <div className="modal-overlay" onClick={() => setShowJobPostings(false)}>
+          <div className="modal-content animate-scale-in" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2 className="modal-title">실시간 채용공고</h2>
+              <button className="close-btn" onClick={() => setShowJobPostings(false)}>
+                <X size={24} />
+              </button>
+            </div>
+            <div className="modal-body">
+              <div className="postings-list">
+                {[
+                  { company: "(주)에이아이테크", title: "프론트엔드 개발자 채용 (React/Vite)", location: "서울 강남구", salary: "연봉 4,500 ~", date: "D-5" },
+                  { company: "미래소프트", title: "데이터 분석가 신입/경력 모집", location: "경기 판교", salary: "연봉 4,000 ~", date: "D-12" },
+                  { company: "글로벌네트웍스", title: "웹 퍼블리셔 및 UI 디자인 전문가", location: "서울 마포구", salary: "월 350 ~", date: "오늘마감" },
+                  { company: "한국시스템", title: "자바 백엔드 엔지니어 정규직 채용", location: "대전 유성구", salary: "연봉 5,000 ~", date: "D-8" }
+                ].map((job, idx) => (
+                  <div key={idx} className="posting-item vibe-hover">
+                    <div className="posting-info">
+                      <span className="posting-company">{job.company}</span>
+                      <h3 className="posting-title">{job.title}</h3>
+                      <div className="posting-meta">
+                        <span>{job.location}</span>
+                        <span className="divider">|</span>
+                        <span>{job.salary}</span>
+                      </div>
+                    </div>
+                    <span className="posting-date">{job.date}</span>
+                  </div>
+                ))}
+              </div>
+              <button className="primary-btn vibe-btn" style={{ marginTop: '20px' }} onClick={() => setShowJobPostings(false)}>전체 공고 보러가기</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 교육·훈련 팝업 */}
+      {showEduPostings && (
+        <div className="modal-overlay" onClick={() => setShowEduPostings(false)}>
+          <div className="modal-content animate-scale-in" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2 className="modal-title">국비지원 교육 안내</h2>
+              <button className="close-btn" onClick={() => setShowEduPostings(false)}>
+                <X size={24} />
+              </button>
+            </div>
+            <div className="modal-body">
+              <div className="postings-list">
+                {[
+                  { type: "내일배움카드", title: "자바스크립트 풀스택 개발자 양성과정", provider: "KH정보교육원", price: "전액 무료", date: "06.12 개강" },
+                  { type: "K-디지털", title: "빅데이터 분석 및 AI 모델링 전문가 과정", provider: "멀티캠퍼스", price: "전액 무료", date: "06.20 개강" },
+                  { type: "일반훈련", title: "전산세무회계 1급/2급 자격증 취득반", provider: "그린컴퓨터아카데미", price: "80% 지원", date: "05.30 개강" },
+                  { type: "내일배움카드", title: "UI/UX 웹디자인 포트폴리오 완성반", provider: "SBS아카데미", price: "전액 무료", date: "06.05 개강" }
+                ].map((edu, idx) => (
+                  <div key={idx} className="posting-item vibe-hover">
+                    <div className="posting-info">
+                      <span className="posting-badge">{edu.type}</span>
+                      <h3 className="posting-title">{edu.title}</h3>
+                      <div className="posting-meta">
+                        <span>{edu.provider}</span>
+                        <span className="divider">|</span>
+                        <span className="price-tag">{edu.price}</span>
+                      </div>
+                    </div>
+                    <span className="posting-date">{edu.date}</span>
+                  </div>
+                ))}
+              </div>
+              <button className="primary-btn vibe-btn" style={{ marginTop: '20px' }} onClick={() => setShowEduPostings(false)}>전체 교육 보러가기</button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }
 
 export default App
+

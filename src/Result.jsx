@@ -34,7 +34,7 @@ function Result({ onBack, onHome }) {
     <div className="result-container animate-fade-in">
       <div className="result-overlay"></div>
       
-      <header className="header" style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 20px' }}>
+      <header className="header" style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 20px', justifyContent: 'flex-start' }}>
         <button className="diagnosis-back-btn" onClick={onBack} title="이전으로">
           <ArrowLeft size={24} />
         </button>

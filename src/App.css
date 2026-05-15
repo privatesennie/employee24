@@ -1791,3 +1791,101 @@
     text-shadow: 0 0 25px rgba(0, 123, 255, 0.6);
   }
 }
+
+/* =========================================
+   Postings List Styles
+   ========================================= */
+
+.postings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.postings-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.postings-list::-webkit-scrollbar-thumb {
+  background: rgba(3, 54, 106, 0.1);
+  border-radius: 10px;
+}
+
+.posting-item {
+  background: white;
+  border: 1px solid #f0f0f0;
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.posting-item:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 8px 20px rgba(3, 54, 106, 0.08);
+  transform: translateY(-2px);
+}
+
+.posting-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.posting-company {
+  font-size: 13px;
+  font-weight: 700;
+  color: #888;
+}
+
+.posting-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #222;
+  margin: 0;
+  text-align: left;
+}
+
+.posting-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #666;
+}
+
+.posting-meta .divider {
+  color: #eee;
+}
+
+.posting-date {
+  font-size: 13px;
+  font-weight: 800;
+  color: #ff5252;
+  background: rgba(255, 82, 82, 0.05);
+  padding: 4px 10px;
+  border-radius: 8px;
+}
+
+.posting-badge {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--primary-color);
+  background: rgba(3, 54, 106, 0.05);
+  padding: 3px 8px;
+  border-radius: 6px;
+  width: fit-content;
+}
+
+.price-tag {
+  color: #2ecc71;
+  font-weight: 800;
+}
+

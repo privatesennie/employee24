@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { User, Phone, Calendar, ArrowRight } from 'lucide-react'
+import { User, Phone, Calendar, ArrowRight, ArrowLeft } from 'lucide-react'
 import './App.css'
 
 function AuthForm({ onComplete, onBack }) {
@@ -43,8 +43,11 @@ function AuthForm({ onComplete, onBack }) {
 
       <div className="overlay"></div>
       
-      <header className="header">
-        <div className="logo-container" style={{ cursor: 'pointer' }} onClick={onBack}>
+      <header className="header" style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 20px', justifyContent: 'flex-start' }}>
+        <button className="diagnosis-back-btn" onClick={onBack} title="이전으로">
+          <ArrowLeft size={24} />
+        </button>
+        <div className="logo-container" style={{ cursor: 'pointer', margin: 0 }} onClick={onBack}>
           <img src={`${import.meta.env.BASE_URL}user_logo.png?v=3`} alt="고용24" className="user-logo" />
           <span className="logo-text">고용24</span>
         </div>
