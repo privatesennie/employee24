@@ -1074,10 +1074,11 @@
   .main-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 28px;
+    column-gap: 24px;
+    row-gap: 16px; /* Reduced vertical gap between rows */
     width: 100%;
     max-width: 1000px;
-    padding: 20px 48px 100px;
+    padding: 20px 32px 100px; /* Reduced side padding */
     box-sizing: border-box;
     margin: 0 auto;
     align-items: start;
@@ -1109,6 +1110,7 @@
   /* Summary card: left column */
   .glass-card {
     grid-column: 1;
+    grid-row: span 2; /* Spans across both filter section rows */
     margin-bottom: 0;
     padding: 40px 32px;
     display: flex;
@@ -1126,7 +1128,7 @@
   /* Filter sections: right column stacked (each takes right side) */
   .filter-section {
     grid-column: 2;
-    margin-bottom: 12px; /* Reduced from 24px */
+    margin-bottom: 0; /* Let grid gap handle spacing */
   }
 
   .filter-section:last-child {
@@ -1601,6 +1603,7 @@
   gap: 10px;
   margin-bottom: 24px;
 }
+
 
 .footer-logo-text {
   font-size: 20px;

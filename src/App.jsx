@@ -238,7 +238,7 @@ function App() {
       <footer className="vibe-footer">
         <div className="footer-top">
           <div className="footer-logo">
-            <Bot size={24} color="#03366a" />
+            <img src={`${import.meta.env.BASE_URL}user_logo.png?v=3`} alt="고용24" className="user-logo" />
             <span className="footer-logo-text">고용24</span>
           </div>
           <div className="footer-info">
@@ -334,8 +334,8 @@ function App() {
 
       {/* 전체 메뉴 모달 */}
       {showMenu && (
-        <div className="full-menu-overlay animate-fade-in">
-          <div className="menu-container animate-slide-in-right">
+        <div className="full-menu-overlay animate-fade-in" onClick={() => setShowMenu(false)}>
+          <div className="menu-container animate-slide-in-right" onClick={e => e.stopPropagation()}>
             <div className="menu-header">
               <div className="logo-container">
                 <img src={`${import.meta.env.BASE_URL}user_logo.png?v=3`} alt="고용24" className="user-logo" />
