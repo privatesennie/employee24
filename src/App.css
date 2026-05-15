@@ -356,7 +356,7 @@
 
 /* Chatbot FAB */
 .chatbot-fab {
-  position: absolute;
+  position: fixed;
   right: 16px;
   bottom: 16px;
   width: 60px;
@@ -1038,10 +1038,24 @@
     width: 100%;
   }
 
-  /* Adjust Chatbot FAB position */
+  /* Adjust Chatbot FAB position and size */
   .chatbot-fab {
     right: 40px;
     bottom: 40px;
+    width: 80px;
+    height: 80px;
+    border-radius: 26px;
+  }
+  
+  .chatbot-fab svg {
+    width: 44px;
+    height: 44px;
+  }
+
+  .chatbot-tooltip {
+    right: 100px; /* 80px width + 20px gap */
+    font-size: 15px;
+    padding: 18px 24px;
   }
 }
 
@@ -1074,5 +1088,25 @@
 
   .summary-container {
     gap: 40px;
+  }
+
+  /* Make Chatbot FAB even larger for desktop */
+  .chatbot-fab {
+    right: 60px;
+    bottom: 60px;
+    width: 90px;
+    height: 90px;
+    border-radius: 28px;
+  }
+  
+  .chatbot-fab svg {
+    width: 50px;
+    height: 50px;
+  }
+
+  .chatbot-tooltip {
+    right: 114px; /* 90px width + 24px gap */
+    font-size: 16px;
+    padding: 20px 28px;
   }
 }

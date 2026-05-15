@@ -120,8 +120,8 @@ function App() {
       </div>
 
       {/* AI Chatbot FAB */}
-      <div className="chatbot-fab">
-        <div className="chatbot-tooltip" onClick={() => setView('diagnosis')}>
+      <div className="chatbot-fab" onClick={() => setView('diagnosis')}>
+        <div className="chatbot-tooltip">
           실업급여 수급 대상 여부를 확인해보세요 !
         </div>
         <Bot size={32} strokeWidth={2.2} />
