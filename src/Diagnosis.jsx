@@ -71,17 +71,23 @@ function Diagnosis({ onBack }) {
         </div>
       </header>
 
-      {/* Stepper */}
-        <div className="stepper">
-          {[1, 2, 3, 4].map((s) => (
-            <div key={s} className={`step-item ${s <= step ? 'active' : ''}`}>
-              <div className="step-box">STEP {s}</div>
-            </div>
-          ))}
-        </div>
-
         <div className="diagnosis-content">
-          <h2 className="ai-chat-title" style={{ marginBottom: '8px' }}>24시간 AI 챗봇 도우미</h2>
+          <div className="diagnosis-header" style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
+            <button className="diagnosis-back-btn" onClick={onBack} title="이전 페이지로">
+              <ArrowLeft size={24} />
+            </button>
+            <h2 className="ai-chat-title" style={{ margin: 0 }}>24시간 AI 챗봇 도우미</h2>
+          </div>
+
+          {/* Stepper */}
+          <div className="stepper" style={{ marginBottom: '24px' }}>
+            {[1, 2, 3, 4].map((s) => (
+              <div key={s} className={`step-item ${s <= step ? 'active' : ''}`}>
+                <div className="step-box">STEP {s}</div>
+              </div>
+            ))}
+          </div>
+
           
           {/* Question Card */}
           <div key={step} className="diagnosis-card animate-fade-in-up">
