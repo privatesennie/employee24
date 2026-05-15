@@ -8,9 +8,9 @@
 * 개발 인원 : 개인 프로젝트 (기여도 100%)
 
 ## 2. 배포 및 관련 링크
-* Live Demo : [배포된 웹사이트 링크 입력](https://privatesennie.github.io/employee24/)
-* GitHub Repository : [깃허브 링크 입력](https://github.com/privatesennie/employee24)
-* Design (Figma) : [피그마 시안 링크 입력](https://www.figma.com/design/NfZpaVL1izNh0qOuN5HIvS/%EA%B3%B5%EA%B3%B5%EC%9B%B9%EC%82%AC%EC%9D%B4%ED%8A%B8-%EA%B0%9C%EC%84%A0?node-id=148-143&m=dev)
+* Live Demo : [배포된 웹사이트](https://privatesennie.github.io/employee24/)
+* GitHub Repository : [깃허브 링크](https://github.com/privatesennie/employee24)
+* Design (Figma) : [피그마 시안 링크](https://www.figma.com/design/NfZpaVL1izNh0qOuN5HIvS/%EA%B3%B5%EA%B3%B5%EC%9B%B9%EC%82%AC%EC%9D%B4%ED%8A%B8-%EA%B0%9C%EC%84%A0?node-id=148-143&m=dev)
 
 ---
 
@@ -23,7 +23,7 @@
 * Figma : 웹 접근성 체크리스트를 기반으로 한 UI/UX 설계 및 프로토타이핑
 * Lighthouse / Axe-core : 웹 접근성 진단 및 품질 지표 측정을 위한 도구 활용
 
-### 🤖 AI-Assisted Development (Vibe Coding)
+### AI-Assisted Development (Vibe Coding)
 * Google Gemini / Antigravity : 시맨틱 마크업 검토, ARIA 속성 최적화, 스크린 리더 호환 로직 리팩토링을 위한 페어 프로그래밍 도구로 활용
 * AI 활용 목표 : 복잡한 공공기관의 정보 구조를 논리적인 접근성 표준에 맞춰 빠르게 재구성하고 오류를 사전에 방지
 
