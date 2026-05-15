@@ -10,6 +10,7 @@ function App() {
   const [showApplicationPopup, setShowApplicationPopup] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
   const [showLoginPopup, setShowLoginPopup] = useState(false)
+  const [activeInfoPopup, setActiveInfoPopup] = useState(null) // 'card', 'digital'
   const [activeFilter, setActiveFilter] = useState(null) // 'region', 'job'
   const [filterStep, setFilterStep] = useState(1)
   const [tempSelection, setTempSelection] = useState('')
@@ -170,11 +171,17 @@ function App() {
                   <div className="summary-value">
                     130,828<span className="summary-unit">건</span>
                   </div>
+                  <div className="summary-footer-btn-wrapper">
+                    <button className="summary-action-btn">확인하러 가기</button>
+                  </div>
                 </div>
                 <div className="summary-item">
                   <span className="summary-label">교육·훈련 수</span>
                   <div className="summary-value">
                     21,877<span className="summary-unit">건</span>
+                  </div>
+                  <div className="summary-footer-btn-wrapper">
+                    <button className="summary-action-btn">확인하러 가기</button>
                   </div>
                 </div>
               </div>
@@ -210,7 +217,14 @@ function App() {
               <h2 className="section-title">교육·훈련</h2>
               <div className="filter-row">
                 {eduFilters.map((filter, index) => (
-                  <button key={index} className="filter-btn">
+                  <button 
+                    key={index} 
+                    className="filter-btn"
+                    onClick={() => {
+                      if (filter === '내일배움카드') setActiveInfoPopup('card')
+                      if (filter === 'K-디지털 훈련') setActiveInfoPopup('digital')
+                    }}
+                  >
                     {filter}
                     <div className="arrow-icon"></div>
                   </button>
@@ -220,6 +234,48 @@ function App() {
           </div>
         </div>
       </div>
+
+      <footer className="vibe-footer">
+        <div className="footer-top">
+          <div className="footer-logo">
+            <Bot size={24} color="#03366a" />
+            <span className="footer-logo-text">고용24</span>
+          </div>
+          <div className="footer-info">
+            <p>(27740) 충청북도 음성군 맹동면 태정로 6 한국고용정보원</p>
+            <p>홈페이지 전산 이용 문의 <strong>1577-7114</strong> (유료, 한국고용정보원 고객상담센터, 평일 09시 ~ 18시)</p>
+            <p>고용·노동 분야 제도 문의 국번없이 <strong>1350</strong> (유료, 고용노동부 고객상담센터, 평일 09시 ~ 18시)</p>
+          </div>
+          <div className="footer-notice">
+            <p>고용24는 <strong>통신판매중개자</strong>이며, 통신판매의 당사자가 아닙니다.</p>
+            <p>상품(훈련), 상품(훈련)정보, 거래에 관한 <strong>의무와 책임은 판매자(훈련기관)</strong>에게 있습니다.</p>
+          </div>
+        </div>
+
+        <div className="footer-middle">
+          <div className="footer-links">
+            <a href="#">이용약관</a>
+            <a href="#" className="bold">개인정보처리방침</a>
+            <a href="#">이메일무단수집거부</a>
+            <a href="#">저작권보호정책</a>
+            <a href="#">오픈API 서비스</a>
+            <a href="#">화상상담 관리자</a>
+            <a href="#">사이트맵</a>
+            <a href="#">챗봇</a>
+          </div>
+          <div className="footer-copyright">
+            © Ministry of Employment and Labor, Korea Employment Information Service. All rights reserved.
+          </div>
+        </div>
+
+        <div className="footer-bottom">
+          <div className="footer-partner-logos">
+            <div className="partner-logo">고용노동부</div>
+            <div className="partner-logo">한국고용정보원</div>
+            <span className="partner-text">이 누리집은 고용노동부와 고용노동부 산하기관 한국고용정보원의 누리집 입니다.</span>
+          </div>
+        </div>
+      </footer>
 
       {/* FAB portal — renders directly into document.body */}
       {fabPortal}
@@ -402,6 +458,48 @@ function App() {
                   <span style={{ color: 'var(--primary-color)', fontWeight: '700' }}>회원가입</span>
                 </div>
               </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 교육·훈련 안내 팝업 */}
+      {activeInfoPopup && (
+        <div className="modal-overlay" onClick={() => setActiveInfoPopup(null)}>
+          <div className="modal-content animate-fade-in-up" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3 className="modal-title">
+                {activeInfoPopup === 'card' ? '국민내일배움카드 안내' : 'K-디지털 트레이닝 안내'}
+              </h3>
+              <button className="close-btn" onClick={() => setActiveInfoPopup(null)}>
+                <X size={24} />
+              </button>
+            </div>
+            <div className="modal-body">
+              {activeInfoPopup === 'card' ? (
+                <div className="info-popup-content">
+                  <div className="info-banner">💳 평생 능력개발을 위한 교육비 지원</div>
+                  <ul className="info-list">
+                    <li><strong>지원대상:</strong> 누구나 신청 가능 (공무원, 사립학교 교직원 등 제외)</li>
+                    <li><strong>지원한도:</strong> 1인당 300~500만원까지 훈련비 지원</li>
+                    <li><strong>유효기간:</strong> 계좌 발급일로부터 5년간 사용 가능</li>
+                    <li><strong>사용방법:</strong> 고용24에서 훈련과정 검색 후 수강신청</li>
+                  </ul>
+                </div>
+              ) : (
+                <div className="info-popup-content">
+                  <div className="info-banner">🚀 미래 IT 산업을 이끌 핵심인재 양성</div>
+                  <ul className="info-list">
+                    <li><strong>교육내용:</strong> AI, 빅데이터, 클라우드 등 첨단 기술 훈련</li>
+                    <li><strong>교육비:</strong> 훈련비 전액 무료 (100% 정부 지원)</li>
+                    <li><strong>훈련장려금:</strong> 성실 참여 시 매월 추가 수당 지급</li>
+                    <li><strong>참여혜택:</strong> 실무 프로젝트 중심 교육 및 취업 매칭</li>
+                  </ul>
+                </div>
+              )}
+              <button className="modal-confirm-btn" style={{ marginTop: '20px' }} onClick={() => setActiveInfoPopup(null)}>
+                내용 확인 완료
+              </button>
             </div>
           </div>
         </div>
