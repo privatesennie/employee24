@@ -1,10 +1,11 @@
 .app-container {
   width: 100%;
-  min-height: 100%;
+  min-height: 100vh;
   position: relative;
   background-image: url('/bg.png');
   background-size: cover;
   background-position: center;
+  background-attachment: fixed; /* bg stays put when scrolling */
   display: flex;
   flex-direction: column;
 }
@@ -351,11 +352,19 @@
   color: var(--primary-color);
 }
 
-/* Chatbot FAB */
-.chatbot-fab {
+/* ── FAB Wrapper (position:fixed, contains FAB + tooltip) ── */
+.fab-wrapper {
   position: fixed;
   right: 16px;
   bottom: 16px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  /* pointer on wrapper so hover events are reliable */
+}
+
+/* Chatbot FAB button – no position:fixed needed, wrapper handles it */
+.chatbot-fab {
   width: 60px;
   height: 60px;
   background: rgba(255, 255, 255, 0.4);
@@ -368,10 +377,10 @@
   justify-content: center;
   color: var(--primary-color);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  z-index: 100;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   animation: float 3s infinite ease-in-out;
+  flex-shrink: 0;
 }
 
 @keyframes float {
@@ -385,7 +394,36 @@
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
-/* Diagnosis Styles */
+/* Tooltip – positioned to the left of the fab-wrapper */
+.chatbot-tooltip {
+  position: absolute;
+  right: calc(100% + 16px); /* always 16px to the left of wrapper edge */
+  bottom: 0;
+  background: var(--primary-color);
+  color: white;
+  padding: 16px 24px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: -10px 10px 30px rgba(3, 54, 106, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(10px) scale(0.9);
+  transform-origin: right center;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+}
+
+/* Visible state (toggled by React state via class) */
+.chatbot-tooltip--visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(0) scale(1);
+}
+
 .diagnosis-container {
   width: 100%;
   min-height: 100%;
@@ -1104,10 +1142,13 @@
     font-size: 20px;
   }
 
-  /* Chatbot FAB */
-  .chatbot-fab {
+  /* Chatbot FAB - wrapper moves, FAB grows */
+  .fab-wrapper {
     right: 40px;
     bottom: 40px;
+  }
+
+  .chatbot-fab {
     width: 80px;
     height: 80px;
     border-radius: 26px;
@@ -1118,10 +1159,7 @@
     height: 44px;
   }
 
-  /* tooltip: right = FAB right(40px) + FAB width(80px) + gap(8px) = 128px */
   .chatbot-tooltip {
-    right: 128px;
-    bottom: 56px; /* vertically centered: bottom(40px) + (80px-14px*2)/2 ≈ 56px */
     font-size: 15px;
     padding: 18px 24px;
   }
@@ -1172,9 +1210,12 @@
   }
 
   /* Desktop Chatbot FAB */
-  .chatbot-fab {
+  .fab-wrapper {
     right: 60px;
     bottom: 60px;
+  }
+
+  .chatbot-fab {
     width: 90px;
     height: 90px;
     border-radius: 28px;
@@ -1185,10 +1226,7 @@
     height: 50px;
   }
 
-  /* tooltip: right = FAB right(60px) + FAB width(90px) + gap(8px) = 158px */
   .chatbot-tooltip {
-    right: 158px;
-    bottom: 75px; /* vertically centered: bottom(60px) + (90px-14px*2)/2 ≈ 75px */
     font-size: 16px;
     padding: 20px 28px;
   }

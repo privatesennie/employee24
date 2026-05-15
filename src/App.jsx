@@ -16,29 +16,23 @@ function App() {
     return <Diagnosis onBack={() => setView('main')} />
   }
 
-  // FAB + Tooltip rendered via portal directly into document.body
-  // This completely escapes any parent stacking context or transform
+  // The FAB wrapper is position:fixed, tooltip is position:absolute inside it.
+  // Rendered via portal to escape any parent stacking context completely.
   const fabPortal = createPortal(
-    <>
-      {showTooltip && (
-        <div
-          className="chatbot-tooltip chatbot-tooltip--visible"
-          onClick={() => setView('diagnosis')}
-          onMouseEnter={() => setShowTooltip(true)}
-          onMouseLeave={() => setShowTooltip(false)}
-        >
-          실업급여 수급 대상 여부를 확인해보세요 !
-        </div>
-      )}
-      <div
-        className="chatbot-fab"
-        onClick={() => setView('diagnosis')}
-        onMouseEnter={() => setShowTooltip(true)}
-        onMouseLeave={() => setShowTooltip(false)}
-      >
+    <div
+      className="fab-wrapper"
+      onMouseEnter={() => setShowTooltip(true)}
+      onMouseLeave={() => setShowTooltip(false)}
+    >
+      {/* Tooltip: position absolute, to the left of the wrapper */}
+      <div className={`chatbot-tooltip${showTooltip ? ' chatbot-tooltip--visible' : ''}`}>
+        실업급여 수급 대상 여부를 확인해보세요 !
+      </div>
+      {/* FAB icon button */}
+      <div className="chatbot-fab" onClick={() => setView('diagnosis')}>
         <Bot size={32} strokeWidth={2.2} />
       </div>
-    </>,
+    </div>,
     document.body
   )
 
@@ -152,7 +146,7 @@ function App() {
         </div>
       </div>
 
-      {/* FAB portal - renders directly into document.body, no stacking context issues */}
+      {/* FAB portal — renders directly into document.body */}
       {fabPortal}
     </>
   )
