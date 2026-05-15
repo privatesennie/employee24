@@ -489,19 +489,23 @@
 
 .step-box {
   background: white;
-  color: #333;
-  padding: 4px 0;
+  color: #555;
+  padding: 6px 0;
   text-align: center;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 11px;
-  font-weight: 700;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  font-weight: 800;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
   transition: all 0.3s ease;
+  border: 1px solid #f0f0f0;
 }
 
 .step-item.active .step-box {
   background: var(--primary-color);
   color: white;
+  border-color: var(--primary-color);
+  box-shadow: 0 6px 15px rgba(3, 54, 106, 0.3);
+  transform: translateY(-2px);
 }
 
 .diagnosis-content {
@@ -625,6 +629,8 @@
   display: flex;
   gap: 12px;
   padding-bottom: 20px;
+  position: relative;
+  z-index: 9999 !important; /* Ensure buttons are always on top and clear */
 }
 
 .nav-btn {
@@ -638,7 +644,7 @@
   justify-content: center;
   gap: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .nav-btn.prev {
@@ -648,19 +654,29 @@
 }
 
 .nav-btn.next {
-  background: var(--primary-color);
-  border: none;
-  color: white;
+  background: var(--primary-color) !important;
+  color: white !important;
+  font-weight: 900 !important;
+  box-shadow: 0 10px 25px rgba(3, 54, 106, 0.4) !important;
+  opacity: 1 !important;
+  border: none !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
 }
 
-.nav-btn.next:disabled {
-  background: #ccc;
-  cursor: not-allowed;
+.nav-btn.next.disabled {
+  background: #d1d9e2 !important; /* Muted navy tint */
+  color: #7d8ea2 !important;
+  cursor: not-allowed !important;
+  opacity: 0.9 !important;
+  box-shadow: none !important;
+  font-weight: 800 !important;
 }
+
+
 
 .nav-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(3, 54, 106, 0.4);
 }
 
 
@@ -1756,4 +1772,21 @@
   color: var(--primary-color);
   transform: translateX(-4px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Progress Completion Flash Effect */
+.progress-finished {
+  animation: success-flash 0.8s ease-out infinite alternate;
+}
+
+@keyframes success-flash {
+  from {
+    transform: scale(1);
+    text-shadow: 0 0 10px rgba(3, 54, 106, 0.2);
+  }
+  to {
+    transform: scale(1.2);
+    color: #007bff;
+    text-shadow: 0 0 25px rgba(0, 123, 255, 0.6);
+  }
 }

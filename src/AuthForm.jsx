@@ -8,18 +8,39 @@ function AuthForm({ onComplete, onBack }) {
     birth: '',
     phone: ''
   })
+  const [isAuthenticating, setIsAuthenticating] = useState(false)
 
   const isFormValid = formData.name && formData.birth && formData.phone
 
   const handleSubmit = (e) => {
     e.preventDefault()
     if (isFormValid) {
-      onComplete()
+      setIsAuthenticating(true)
+      // Explicitly show "Authenticating" state for 1.5s
+      setTimeout(() => {
+        onComplete()
+      }, 1500)
     }
+  }
+
+  if (isAuthenticating) {
+    return (
+      <div className="auth-container animate-fade-in">
+        <div className="overlay"></div>
+        <div className="auth-content" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+          <div className="loading-state animate-fade-in-up">
+            <div className="spinner-ring"></div>
+            <h2 className="loading-text" style={{ marginTop: '24px' }}>본인 인증 정보를<br/>확인하고 있습니다</h2>
+            <p className="loading-subtext">잠시만 기다려주세요</p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
     <div className="auth-container animate-fade-in">
+
       <div className="overlay"></div>
       
       <header className="header">

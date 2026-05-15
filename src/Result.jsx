@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { CheckCircle, Home, FileText } from 'lucide-react'
+import { CheckCircle, Home, FileText, ArrowLeft } from 'lucide-react'
 import './App.css'
 
 function Result({ onBack }) {
@@ -20,7 +20,10 @@ function Result({ onBack }) {
       
       if (currentStep >= steps) {
         clearInterval(timer)
-        setTimeout(() => setLoading(false), 300) // slight delay after 100%
+        setProgress(100)
+        setTimeout(() => {
+          setLoading(false)
+        }, 600) // Ensure enough time for the 100% flash animation
       }
     }, interval)
 
@@ -31,8 +34,11 @@ function Result({ onBack }) {
     <div className="result-container animate-fade-in">
       <div className="result-overlay"></div>
       
-      <header className="header">
-        <div className="logo-container" style={{ cursor: 'pointer' }} onClick={onBack}>
+      <header className="header" style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 20px' }}>
+        <button className="diagnosis-back-btn" onClick={onBack} title="이전으로">
+          <ArrowLeft size={24} />
+        </button>
+        <div className="logo-container" style={{ cursor: 'pointer', margin: 0 }} onClick={onBack}>
           <img src={`${import.meta.env.BASE_URL}user_logo.png?v=3`} alt="고용24" className="user-logo" />
           <span className="logo-text">고용24</span>
         </div>
@@ -41,7 +47,7 @@ function Result({ onBack }) {
       <div className="result-content">
         {loading ? (
           <div className="loading-state animate-fade-in-up">
-            <div className="progress-container">
+            <div className={`progress-container ${progress === 100 ? 'progress-finished' : ''}`}>
               <div className="spinner-ring"></div>
               <div className="progress-text">{progress}%</div>
             </div>
@@ -56,7 +62,7 @@ function Result({ onBack }) {
             
             <h2 className="success-title">자가진단이<br/>완료되었습니다</h2>
             <p className="success-desc">
-              입력해주신 정보를 바탕으로<br/>
+              입력해주신 정보를 바탕으로 확인 해 보았을 때<br/>
               <span className="highlight-text">실업급여 수급 자격</span>을 충족하실 가능성이 높습니다.
             </p>
 

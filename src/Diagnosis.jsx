@@ -51,12 +51,12 @@ function Diagnosis({ onBack }) {
 
   // AuthForm view for step 5
   if (step === 5) {
-    return <AuthForm onBack={onBack} onComplete={() => setStep(6)} />
+    return <AuthForm onBack={() => setStep(4)} onComplete={() => setStep(6)} />
   }
 
   // Result view for step 6
   if (step === 6) {
-    return <Result onBack={onBack} />
+    return <Result onBack={() => setStep(4)} />
   }
 
   return (
@@ -151,9 +151,8 @@ function Diagnosis({ onBack }) {
             </button>
           ) : (
             <button 
-              className="nav-btn next" 
-              disabled={!answer}
-              onClick={handleNext}
+              className={`nav-btn next ${!answer ? 'disabled' : ''}`}
+              onClick={answer ? handleNext : undefined}
             >
               다음 단계로
               <ChevronRight size={18} />
