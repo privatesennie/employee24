@@ -83,3 +83,12 @@ body {
 .animate-fade-in {
   animation: fadeIn 0.8s ease-out forwards;
 }
+
+/* Responsive Overrides */
+@media (min-width: 724px) {
+  #root {
+    max-width: 100%;
+    max-height: 100vh;
+    box-shadow: none;
+  }
+}
