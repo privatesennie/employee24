@@ -123,19 +123,23 @@ function App() {
         </div>
       </div>
 
-      {/* AI Chatbot FAB */}
+      {/* AI Chatbot FAB - tooltip rendered independently outside FAB */}
+      {showTooltip && (
+        <div
+          className="chatbot-tooltip chatbot-tooltip--visible"
+          onClick={() => setView('diagnosis')}
+          onMouseEnter={() => setShowTooltip(true)}
+          onMouseLeave={() => setShowTooltip(false)}
+        >
+          실업급여 수급 대상 여부를 확인해보세요 !
+        </div>
+      )}
       <div
         className="chatbot-fab"
         onClick={() => setView('diagnosis')}
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
       >
-        <div
-          className={`chatbot-tooltip${showTooltip ? ' chatbot-tooltip--visible' : ''}`}
-          onClick={(e) => { e.stopPropagation(); setView('diagnosis'); }}
-        >
-          실업급여 수급 대상 여부를 확인해보세요 !
-        </div>
         <Bot size={32} strokeWidth={2.2} />
       </div>
     </div>

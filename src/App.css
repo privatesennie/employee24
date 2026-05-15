@@ -586,9 +586,9 @@
 }
 
 .chatbot-tooltip {
-  position: absolute;
-  right: 76px;
-  bottom: 0;
+  position: fixed;
+  right: 88px;   /* sits to the left of the 60px FAB at right:16px */
+  bottom: 26px;  /* vertically centered with the 60px FAB at bottom:16px */
   background: var(--primary-color);
   color: white;
   padding: 16px 24px;
@@ -603,21 +603,11 @@
   transform: translateX(10px) scale(0.9);
   transform-origin: right center;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  z-index: 200;
+  z-index: 9999;
   cursor: pointer;
 }
 
-/* Bridging area so cursor can move from FAB to tooltip */
-.chatbot-tooltip::before {
-  content: '';
-  position: absolute;
-  right: -24px;
-  top: 0;
-  width: 24px;
-  height: 100%;
-}
-
-/* Show tooltip via JS state class (avoids CSS animation conflict) */
+/* Show tooltip via JS state class */
 .chatbot-tooltip--visible {
   opacity: 1 !important;
   visibility: visible !important;
@@ -1128,8 +1118,10 @@
     height: 44px;
   }
 
+  /* tooltip: right = FAB right(40px) + FAB width(80px) + gap(8px) = 128px */
   .chatbot-tooltip {
-    right: 100px;
+    right: 128px;
+    bottom: 56px; /* vertically centered: bottom(40px) + (80px-14px*2)/2 ≈ 56px */
     font-size: 15px;
     padding: 18px 24px;
   }
@@ -1193,8 +1185,10 @@
     height: 50px;
   }
 
+  /* tooltip: right = FAB right(60px) + FAB width(90px) + gap(8px) = 158px */
   .chatbot-tooltip {
-    right: 114px;
+    right: 158px;
+    bottom: 75px; /* vertically centered: bottom(60px) + (90px-14px*2)/2 ≈ 75px */
     font-size: 16px;
     padding: 20px 28px;
   }
