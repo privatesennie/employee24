@@ -1,0 +1,85 @@
+:root {
+  --primary-color: #03366A;
+  --secondary-color: #004ea2;
+  --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  --card-bg: rgba(255, 255, 255, 0.4);
+  --card-border: rgba(255, 255, 255, 0.6);
+  --glass-bg: rgba(255, 255, 255, 0.25);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --text-main: #333333;
+  --text-dim: #666666;
+  --white: #ffffff;
+  
+  --font-main: 'Pretendard Variable', Pretendard, sans-serif;
+  --font-point: 'Pretendard Variable', Pretendard, sans-serif;
+
+  font-family: var(--font-main);
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light;
+  color: var(--text-main);
+  background-color: #f0f2f5;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: var(--bg-gradient);
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  max-width: 402px; /* Figma Mobile Width */
+  height: 100vh;
+  max-height: 804px; /* Figma Mobile Height */
+  background: #fff;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+#root::-webkit-scrollbar {
+  display: none;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
