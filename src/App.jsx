@@ -10,6 +10,8 @@ function App() {
   const [showApplicationPopup, setShowApplicationPopup] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
   const [showLoginPopup, setShowLoginPopup] = useState(false)
+  const [showJobSearchChoice, setShowJobSearchChoice] = useState(false)
+  const [showVocationalGuide, setShowVocationalGuide] = useState(false)
   const [activeInfoPopup, setActiveInfoPopup] = useState(null) // 'card', 'digital'
   const [activeFilter, setActiveFilter] = useState(null) // 'region', 'job'
   const [filterStep, setFilterStep] = useState(1)
@@ -152,6 +154,10 @@ function App() {
                         setShowApplicationPopup(true)
                       } else if (tag === '실업급여 수급 자격 확인') {
                         setView('diagnosis')
+                      } else if (tag === '맞춤 일자리 찾기') {
+                        setShowJobSearchChoice(true)
+                      } else if (tag === '직업훈련 안내') {
+                        setShowVocationalGuide(true)
                       }
                     }}
                   >
@@ -365,6 +371,89 @@ function App() {
             <div className="menu-footer">
               <button className="menu-footer-btn" onClick={() => { setShowMenu(false); setShowLoginPopup(true); }}>로그인</button>
               <button className="menu-footer-btn">회원가입</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 직업훈련 안내 팝업 */}
+      {showVocationalGuide && (
+        <div className="modal-overlay" onClick={() => setShowVocationalGuide(false)}>
+          <div className="modal-content animate-fade-in-up" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3 className="modal-title">국비지원 직업훈련 안내</h3>
+              <button className="close-btn" onClick={() => setShowVocationalGuide(false)}>
+                <X size={24} />
+              </button>
+            </div>
+            <div className="modal-body">
+              <div className="info-popup-content">
+                <div className="info-banner">🎓 구직자와 재직자를 위한 전문 기술 교육</div>
+                <ul className="info-list">
+                  <li><strong>지원내용:</strong> 국민내일배움카드를 통한 훈련비 최대 100% 지원</li>
+                  <li><strong>훈련분야:</strong> IT, 디자인, 요리, 물류, 경영 등 전 산업 분야</li>
+                  <li><strong>훈련장려금:</strong> 출석률 80% 이상 시 매월 최대 11만 6천원 추가 지급</li>
+                  <li><strong>참여혜택:</strong> 취업 컨설팅, 이력서 첨삭, 우수 기업 매칭 지원</li>
+                </ul>
+                <div style={{ marginTop: '20px', padding: '16px', background: '#f8f9fa', borderRadius: '12px', fontSize: '13.5px', color: '#555' }}>
+                  <p style={{ margin: '0 0 8px 0', fontWeight: '800', color: '#333' }}>💡 참여 방법</p>
+                  1. 고용24 로그인<br/>
+                  2. 국민내일배움카드 발급 신청<br/>
+                  3. 원하는 훈련과정 검색 및 수강 신청
+                </div>
+              </div>
+              <button className="modal-confirm-btn" style={{ marginTop: '20px' }} onClick={() => setShowVocationalGuide(false)}>
+                확인 완료
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 맞춤 일자리 찾기 선택 팝업 */}
+      {showJobSearchChoice && (
+        <div className="modal-overlay" onClick={() => setShowJobSearchChoice(false)}>
+          <div className="modal-content animate-fade-in-up" style={{ maxWidth: '400px' }} onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3 className="modal-title">맞춤 일자리 찾기</h3>
+              <button className="close-btn" onClick={() => setShowJobSearchChoice(false)}>
+                <X size={24} />
+              </button>
+            </div>
+            <div className="modal-body" style={{ padding: '24px' }}>
+              <p style={{ fontSize: '14px', color: '#666', marginBottom: '20px', textAlign: 'center' }}>
+                원하시는 검색 방식을 선택해주세요.
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <button 
+                  className="primary-btn vibe-btn" 
+                  onClick={() => {
+                    setShowJobSearchChoice(false)
+                    setActiveFilter('region')
+                    setFilterStep(1)
+                  }}
+                >
+                  지역별 일자리 찾기
+                </button>
+                <button 
+                  className="primary-btn vibe-btn" 
+                  style={{ background: 'white', color: 'var(--primary-color)', border: '1px solid var(--primary-color)' }}
+                  onClick={() => {
+                    setShowJobSearchChoice(false)
+                    setActiveFilter('job')
+                    setFilterStep(1)
+                  }}
+                >
+                  직종별 일자리 찾기
+                </button>
+                <button 
+                  className="primary-btn vibe-btn" 
+                  style={{ background: 'white', color: '#666', border: '1px solid #ddd' }}
+                  onClick={() => setShowJobSearchChoice(false)}
+                >
+                  테마별 일자리 찾기
+                </button>
+              </div>
             </div>
           </div>
         </div>
