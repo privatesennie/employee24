@@ -1,12 +1,60 @@
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Search, Menu, LogIn, UserPlus, Sparkles, Bot } from 'lucide-react'
+import { Search, Menu, LogIn, UserPlus, Sparkles, Bot, X, ChevronRight } from 'lucide-react'
 import './App.css'
 import Diagnosis from './Diagnosis'
 
 function App() {
   const [view, setView] = useState('main')
   const [showTooltip, setShowTooltip] = useState(false)
+  const [showApplicationPopup, setShowApplicationPopup] = useState(false)
+  const [showMenu, setShowMenu] = useState(false)
+  const [showLoginPopup, setShowLoginPopup] = useState(false)
+  const [activeFilter, setActiveFilter] = useState(null) // 'region', 'job'
+  const [filterStep, setFilterStep] = useState(1)
+  const [tempSelection, setTempSelection] = useState('')
+
+  const regions = ["서울특별시", "부산광역시", "대구광역시", "인천광역시", "광주광역시", "대전광역시", "울산광역시", "세종특별자치시", "경기도", "강원도", "충청북도", "충청남도", "전라북도", "전라남도", "경상북도", "경상남도", "제주특별자치도"]
+  
+  const regionMapping = {
+    "서울특별시": ["전체", "강남구", "강동구", "강북구", "강서구", "관악구", "광진구", "구로구", "금천구", "노원구", "도봉구", "동대문구", "동작구", "마포구", "서대문구", "서초구", "성동구", "성북구", "송파구", "양천구", "영등포구", "용산구", "은평구", "종로구", "중구", "중랑구"],
+    "경기도": ["전체", "수원시", "성남시", "의정부시", "안양시 만안구", "안양시 동안구", "부천시", "광명시", "평택시", "동두천시", "안산시", "고양시", "과천시", "구리시", "남양주시", "오산시", "시흥시", "군포시", "의왕시", "하남시", "용인시", "파주시", "이천시", "안성시", "김포시", "화성시", "광주시", "양주시", "포천시", "여주시", "양평군", "가평군", "연천군"],
+    "부산광역시": ["전체", "중구", "서구", "동구", "영도구", "부산진구", "동래구", "남구", "북구", "해운대구", "사하구", "금정구", "강서구", "연제구", "수영구", "사상구", "기장군"],
+    "대구광역시": ["전체", "중구", "동구", "서구", "남구", "북구", "수성구", "달서구", "달성군", "군위군"],
+    "인천광역시": ["전체", "중구", "동구", "미추홀구", "연수구", "남동구", "부평구", "계양구", "서구", "강화군", "옹진군"],
+    "광주광역시": ["전체", "동구", "서구", "남구", "북구", "광산구"],
+    "대전광역시": ["전체", "동구", "중구", "서구", "유성구", "대덕구"],
+    "울산광역시": ["전체", "중구", "남구", "동구", "북구", "울주군"],
+    "세종특별자치시": ["전체", "세종시"],
+    "강원도": ["전체", "춘천시", "원주시", "강릉시", "동해시", "태백시", "속초시", "삼척시", "홍천군", "횡성군", "영월군", "평창군", "정선군", "철원군", "화천군", "양구군", "인제군", "고성군", "양양군"],
+    "충청북도": ["전체", "청주시", "충주시", "제천시", "보은군", "옥천군", "영동군", "증평군", "진천군", "괴산군", "음성군", "단양군"],
+    "충청남도": ["전체", "천안시", "공주시", "보령시", "아산시", "서산시", "논산시", "계룡시", "당진시", "금산군", "부여군", "서천군", "청양군", "홍성군", "예산군", "태안군"],
+    "전라북도": ["전체", "전주시", "군산시", "익산시", "정읍시", "남원시", "김제시", "완주군", "진안군", "무주군", "장수군", "임실군", "순창군", "고창군", "부안군"],
+    "전라남도": ["전체", "목포시", "여수시", "순천시", "나주시", "광양시", "담양군", "곡성군", "구례군", "고흥군", "보성군", "화순군", "장흥군", "강진군", "해남군", "영암군", "무안군", "함평군", "영광군", "장성군", "완도군", "진도군", "신안군"],
+    "경상북도": ["전체", "포항시", "경주시", "김천시", "안동시", "구미시", "영주시", "영천시", "상주시", "문경시", "경산시", "의성군", "청송군", "영양군", "영덕군", "청도군", "고령군", "성주군", "칠곡군", "예천군", "봉화군", "울진군", "울릉군"],
+    "경상남도": ["전체", "창원시", "진주시", "통영시", "사천시", "김해시", "밀양시", "거제시", "양산시", "의령군", "함안군", "창녕군", "고성군", "남해군", "하동군", "산청군", "함양군", "거창군", "합천군"],
+    "제주특별자치도": ["전체", "제주시", "서귀포시"]
+  }
+  
+  const ncsCategories = [
+    "01. 사업관리", "02. 경영·회계·사무", "03. 금융·보험", "04. 교육·자연·사회과학", 
+    "05. 법률·경찰·소방·교도·국방", "06. 보건·의료", "07. 사회복지·종교", "08. 문화·예술·디자인·방송", 
+    "09. 운전·운송", "10. 영업판매", "11. 경비·청소", "12. 이용·숙박·여행·오락·스포츠", 
+    "13. 음식서비스", "14. 건설", "15. 기계", "16. 재료", 
+    "17. 화학", "18. 섬유·의복", "19. 전기·전자", "20. 정보통신", 
+    "21. 식품가공", "22. 인쇄·목재·가구·공예", "23. 환경·에너지·안전", "24. 농림어업"
+  ]
+  
+  const ncsMapping = {
+    "02. 경영·회계·사무": ["전체", "경영기획", "홍보", "인사", "사무행정", "회계·감사"],
+    "20. 정보통신": ["전체", "IT프로젝트관리", "IT전략·기획", "소프트웨어개발", "네트워크", "DB구축", "보안"],
+    "08. 문화·예술·디자인·방송": ["전체", "디자인", "문화예술", "영상제작", "공연예술"]
+  }
+
+  const menuItems = [
+    "채용정보", "취업지원", "실업급여", "직업 능력 개발", 
+    "출산휴직 ·육아휴직", "기타민원", "고객센터", "마이페이지"
+  ]
 
   const jobFilters = ['지역별', '직종별', '테마별']
   const eduFilters = ['내일배움카드', 'K-디지털 훈련', '정부부처별']
@@ -51,7 +99,7 @@ function App() {
             <span className="logo-text">고용24</span>
           </div>
           <div className="header-icons">
-            <button className="icon-btn">
+            <button className="icon-btn" onClick={() => setShowLoginPopup(true)}>
               <LogIn size={20} />
               <span>로그인</span>
             </button>
@@ -59,7 +107,7 @@ function App() {
               <UserPlus size={20} />
               <span>회원가입</span>
             </button>
-            <button className="icon-btn">
+            <button className="icon-btn" onClick={() => setShowMenu(true)}>
               <Menu size={20} />
               <span>메뉴</span>
             </button>
@@ -95,7 +143,19 @@ function App() {
               </div>
               <div className="ai-suggestion-tags">
                 {aiSuggestions.map((tag, i) => (
-                  <span key={i} className="tag">#{tag}</span>
+                  <span 
+                    key={i} 
+                    className="tag"
+                    onClick={() => {
+                      if (tag === '실업급여 신청방법') {
+                        setShowApplicationPopup(true)
+                      } else if (tag === '실업급여 수급 자격 확인') {
+                        setView('diagnosis')
+                      }
+                    }}
+                  >
+                    #{tag}
+                  </span>
                 ))}
               </div>
             </div>
@@ -125,7 +185,19 @@ function App() {
               <h2 className="section-title">채용 정보</h2>
               <div className="filter-row">
                 {jobFilters.map((filter, index) => (
-                  <button key={index} className="filter-btn">
+                  <button 
+                    key={index} 
+                    className="filter-btn"
+                    onClick={() => {
+                      if (filter === '지역별') {
+                        setActiveFilter('region')
+                        setFilterStep(1)
+                      } else if (filter === '직종별') {
+                        setActiveFilter('job')
+                        setFilterStep(1)
+                      }
+                    }}
+                  >
                     {filter}
                     <div className="arrow-icon"></div>
                   </button>
@@ -151,6 +223,189 @@ function App() {
 
       {/* FAB portal — renders directly into document.body */}
       {fabPortal}
+
+      {/* 실업급여 신청방법 팝업 */}
+      {showApplicationPopup && (
+        <div className="modal-overlay" onClick={() => setShowApplicationPopup(false)}>
+          <div className="modal-content animate-fade-in-up" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3 className="modal-title">실업급여 신청방법 안내</h3>
+              <button className="close-btn" onClick={() => setShowApplicationPopup(false)}>
+                <X size={24} />
+              </button>
+            </div>
+            <div className="modal-body">
+              <div className="info-banner">
+                💡 실업급여는 실직 후 지체 없이 신청하셔야 합니다!
+              </div>
+              <ol className="method-list">
+                <li>
+                  <span className="step-num">01</span>
+                  <div>
+                    <strong>워크넷 구직등록</strong>
+                    <p>워크넷(work.go.kr)에 접속하여 구직신청을 완료합니다.</p>
+                  </div>
+                </li>
+                <li>
+                  <span className="step-num">02</span>
+                  <div>
+                    <strong>온라인 교육 이수</strong>
+                    <p>고용24에서 수급자격 온라인 교육을 시청합니다.</p>
+                  </div>
+                </li>
+                <li>
+                  <span className="step-num">03</span>
+                  <div>
+                    <strong>수급자격 인정 신청</strong>
+                    <p>거주지 관할 고용센터를 방문하거나 온라인으로 신청서를 제출합니다.</p>
+                  </div>
+                </li>
+                <li>
+                  <span className="step-num">04</span>
+                  <div>
+                    <strong>구직급여 신청 및 지급</strong>
+                    <p>실업인정일에 적극적 재취업 활동 확인 후 급여가 지급됩니다.</p>
+                  </div>
+                </li>
+              </ol>
+              <button className="modal-confirm-btn" onClick={() => setShowApplicationPopup(false)}>
+                확인했습니다
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 전체 메뉴 모달 */}
+      {showMenu && (
+        <div className="full-menu-overlay animate-fade-in">
+          <div className="menu-container animate-slide-in-right">
+            <div className="menu-header">
+              <div className="logo-container">
+                <img src={`${import.meta.env.BASE_URL}user_logo.png?v=3`} alt="고용24" className="user-logo" />
+                <span className="logo-text">고용24</span>
+              </div>
+              <button className="close-btn" onClick={() => setShowMenu(false)}>
+                <X size={28} />
+              </button>
+            </div>
+            <div className="menu-body">
+              <div className="menu-user-info">
+                <div className="user-avatar">G</div>
+                <div className="user-welcome">
+                  <p>반갑습니다!</p>
+                  <strong>로그인이 필요합니다</strong>
+                </div>
+              </div>
+              <ul className="menu-list">
+                {menuItems.map((item, idx) => (
+                  <li key={idx} className="menu-item" onClick={() => setShowMenu(false)}>
+                    {item}
+                    <ChevronRight size={18} opacity={0.3} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="menu-footer">
+              <button className="menu-footer-btn" onClick={() => { setShowMenu(false); setShowLoginPopup(true); }}>로그인</button>
+              <button className="menu-footer-btn">회원가입</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 지역별 / 직종별 선택 팝업 */}
+      {activeFilter && (
+        <div className="modal-overlay" onClick={() => setActiveFilter(null)}>
+          <div className="modal-content animate-fade-in-up" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3 className="modal-title">
+                {activeFilter === 'region' ? '지역 선택' : '직종 선택'} 
+                <span style={{ fontSize: '13px', marginLeft: '8px', opacity: 0.6 }}>
+                  ({filterStep}/2 단계)
+                </span>
+              </h3>
+              <button className="close-btn" onClick={() => setActiveFilter(null)}>
+                <X size={24} />
+              </button>
+            </div>
+            <div className="modal-body" style={{ padding: '16px' }}>
+              <div className="filter-selection-grid">
+                {filterStep === 1 ? (
+                  (activeFilter === 'region' ? regions : ncsCategories).map((item) => (
+                    <button 
+                      key={item} 
+                      className="selection-item-btn"
+                      onClick={() => {
+                        setTempSelection(item)
+                        setFilterStep(2)
+                      }}
+                    >
+                      {item}
+                    </button>
+                  ))
+                ) : (
+                  (activeFilter === 'region' 
+                    ? (regionMapping[tempSelection] || ["전체"]) 
+                    : (ncsMapping[tempSelection] || ["전체", "세부직무 01", "세부직무 02"])
+                  ).map((item) => (
+                    <button 
+                      key={item} 
+                      className="selection-item-btn"
+                      onClick={() => setActiveFilter(null)}
+                    >
+                      {item === '전체' ? `${tempSelection} 전체` : item}
+                    </button>
+                  ))
+                )}
+              </div>
+              {filterStep === 2 && (
+                <button 
+                  className="modal-confirm-btn" 
+                  style={{ marginTop: '20px', background: '#f0f0f0', color: '#555' }}
+                  onClick={() => setFilterStep(1)}
+                >
+                  이전 단계로
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 로그인 팝업 */}
+      {showLoginPopup && (
+        <div className="modal-overlay" onClick={() => setShowLoginPopup(false)}>
+          <div className="modal-content animate-fade-in-up" style={{ maxWidth: '400px' }} onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3 className="modal-title">로그인</h3>
+              <button className="close-btn" onClick={() => setShowLoginPopup(false)}>
+                <X size={24} />
+              </button>
+            </div>
+            <div className="modal-body">
+              <form className="auth-form" onSubmit={(e) => { e.preventDefault(); setShowLoginPopup(false); }}>
+                <div className="input-group">
+                  <label>아이디</label>
+                  <input type="text" className="vibe-input" style={{ paddingLeft: '16px' }} placeholder="아이디를 입력하세요" />
+                </div>
+                <div className="input-group" style={{ marginTop: '16px' }}>
+                  <label>비밀번호</label>
+                  <input type="password" className="vibe-input" style={{ paddingLeft: '16px' }} placeholder="비밀번호를 입력하세요" />
+                </div>
+                <button type="submit" className="primary-btn vibe-btn" style={{ marginTop: '24px' }}>
+                  로그인
+                </button>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', marginTop: '16px', fontSize: '13px', color: '#666' }}>
+                  <span>아이디 찾기</span>
+                  <span>비밀번호 찾기</span>
+                  <span style={{ color: 'var(--primary-color)', fontWeight: '700' }}>회원가입</span>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }

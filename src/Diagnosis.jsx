@@ -126,9 +126,12 @@ function Diagnosis({ onBack }) {
 
         {/* Footer Buttons */}
         <div className="diagnosis-footer">
-          <button className="nav-btn prev" onClick={onBack}>
+          <button 
+            className="nav-btn prev" 
+            onClick={step > 1 ? () => setStep(step - 1) : onBack}
+          >
             <ArrowLeft size={18} />
-            이전 페이지로
+            {step > 1 ? '이전 단계로' : '이전 페이지로'}
           </button>
           
           {isRejected ? (
