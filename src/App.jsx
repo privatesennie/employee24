@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Search, Menu, LogIn, UserPlus, Sparkles, Bot, X, ChevronRight, Lock, ShieldCheck } from 'lucide-react'
+import { Search, Menu, LogIn, UserPlus, Sparkles, Bot, X, ChevronRight, Lock, ShieldCheck, Briefcase, GraduationCap, HelpCircle, Compass } from 'lucide-react'
 import './App.css'
 import Diagnosis from './Diagnosis'
 
@@ -77,16 +77,19 @@ function App() {
       className="fab-wrapper"
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
+      role="complementary"
+      aria-label="AI 챗봇 빠른 상담 도구"
     >
       {/* Tooltip: position absolute, to the left of the wrapper */}
       <div 
         className={`chatbot-tooltip${showTooltip ? ' chatbot-tooltip--visible' : ''}`}
         onClick={() => setView('diagnosis')}
+        role="tooltip"
       >
         실업급여 수급 대상 여부를 확인해보세요 !
       </div>
       {/* FAB icon button */}
-      <div className="chatbot-fab" onClick={() => setView('diagnosis')}>
+      <div className="chatbot-fab" onClick={() => setView('diagnosis')} aria-label="AI 취업비서 자가진단 열기" role="button" tabIndex={0}>
         <Bot size={32} strokeWidth={2.2} />
       </div>
     </div>,
@@ -98,42 +101,43 @@ function App() {
       <div className="app-container">
         <div className="overlay"></div>
 
-        {/* Header Section */}
-        <header className="header">
-          <div className="logo-container">
+        {/* Header Section (Landmark: banner) */}
+        <header className="header" role="banner" aria-label="고용24 메인 헤더">
+          <div className="logo-container" tabIndex={0}>
             <img src={`${import.meta.env.BASE_URL}user_logo.png?v=3`} alt="고용24" className="user-logo" />
             <span className="logo-text">고용24</span>
           </div>
           <div className="header-icons">
-            <button className="icon-btn" onClick={() => setShowLoginPopup(true)}>
+            <button className="icon-btn" onClick={() => setShowLoginPopup(true)} aria-label="로그인 팝업 열기">
               <LogIn size={20} />
               <span>로그인</span>
             </button>
-            <button className="icon-btn" onClick={() => setShowSignUpPopup(true)}>
+            <button className="icon-btn" onClick={() => setShowSignUpPopup(true)} aria-label="회원가입 팝업 열기">
               <UserPlus size={20} />
               <span>회원가입</span>
             </button>
-            <button className="icon-btn" onClick={() => setShowMenu(true)}>
+            <button className="icon-btn" onClick={() => setShowMenu(true)} aria-label="전체 메뉴 열기">
               <Menu size={20} />
               <span>메뉴</span>
             </button>
           </div>
         </header>
 
-        {/* Main Grid Layout */}
-        <div className="main-grid">
+        {/* Main Content Area (Landmark: main) */}
+        <main className="main-grid" role="main" aria-label="고용24 주요 서비스 및 채용 탐색">
           {/* Search Bar Section */}
-          <div className="search-container animate-fade-in">
+          <section className="search-container animate-fade-in" aria-label="일자리 통합 검색">
             <Search className="search-icon" size={20} />
             <input
               type="text"
               className="search-bar"
               placeholder="어떤 일자리를 찾으시나요?"
+              aria-label="검색어 입력"
             />
-          </div>
+          </section>
 
           {/* Central AI Chat Section */}
-          <div className="ai-chat-section animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+          <section className="ai-chat-section animate-fade-in-up" style={{ animationDelay: '0.1s' }} aria-label="AI 챗봇 비서 및 추천 키워드">
             <div className="ai-chat-card">
               <div className="ai-chat-header">
                 <div className="ai-badge">AI HELP</div>
@@ -144,12 +148,13 @@ function App() {
                   type="text"
                   className="ai-chat-input"
                   placeholder="궁금한 내용을 입력해 보세요"
+                  aria-label="AI 챗봇 질문 입력"
                 />
                 <Sparkles className="ai-input-icon" size={20} style={{ position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)', color: '#03366A', opacity: 0.6 }} />
               </div>
-              <div className="ai-suggestion-tags">
+              <div className="ai-suggestion-tags" role="navigation" aria-label="추천 키워드 바로가기">
                 {aiSuggestions.map((tag, i) => (
-                  <span 
+                  <button 
                     key={i} 
                     className="tag"
                     onClick={() => {
@@ -163,17 +168,69 @@ function App() {
                         setShowVocationalGuide(true)
                       }
                     }}
+                    aria-label={`${tag} 정보 보기`}
                   >
                     #{tag}
-                  </span>
+                  </button>
                 ))}
               </div>
             </div>
-          </div>
+          </section>
+
+          {/* 주요 서비스 내비게이션 (Landmark Navigation) */}
+          <nav className="landmark-section animate-fade-in-up" style={{ animationDelay: '0.15s' }} aria-label="주요 서비스 바로가기">
+            <div className="landmark-header">
+              <h2 className="landmark-header-title">
+                <Compass size={24} color="var(--primary-color)" />
+                주요 서비스
+              </h2>
+            </div>
+            <div className="landmark-grid">
+              <div className="landmark-card" onClick={() => setView('diagnosis')} role="button" tabIndex={0} aria-label="AI 자가진단 서비스로 이동">
+                <div className="landmark-icon-wrapper">
+                  <Bot size={28} strokeWidth={2.2} />
+                </div>
+                <div className="landmark-info">
+                  <span className="landmark-title">AI 자가진단</span>
+                  <span className="landmark-desc">실업급여 및 수급자격 1분 진단</span>
+                </div>
+              </div>
+
+              <div className="landmark-card" onClick={() => setShowJobSearchChoice(true)} role="button" tabIndex={0} aria-label="맞춤 일자리 찾기 선택 창 열기">
+                <div className="landmark-icon-wrapper">
+                  <Briefcase size={28} strokeWidth={2.2} />
+                </div>
+                <div className="landmark-info">
+                  <span className="landmark-title">일자리 찾기</span>
+                  <span className="landmark-desc">지역별·직종별 최적 맞춤 일자리</span>
+                </div>
+              </div>
+
+              <div className="landmark-card" onClick={() => setShowVocationalGuide(true)} role="button" tabIndex={0} aria-label="국비지원 직업훈련 안내 창 열기">
+                <div className="landmark-icon-wrapper">
+                  <GraduationCap size={28} strokeWidth={2.2} />
+                </div>
+                <div className="landmark-info">
+                  <span className="landmark-title">직업 훈련</span>
+                  <span className="landmark-desc">내일배움카드 및 K-디지털 안내</span>
+                </div>
+              </div>
+
+              <div className="landmark-card" onClick={() => setShowApplicationPopup(true)} role="button" tabIndex={0} aria-label="실업급여 신청방법 안내 창 열기">
+                <div className="landmark-icon-wrapper">
+                  <HelpCircle size={28} strokeWidth={2.2} />
+                </div>
+                <div className="landmark-info">
+                  <span className="landmark-title">실업급여 안내</span>
+                  <span className="landmark-desc">신청 절차 및 수급 요건 총정리</span>
+                </div>
+              </div>
+            </div>
+          </nav>
 
           <div className="content">
             {/* Summary Section */}
-            <div className="glass-card animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+            <section className="glass-card animate-fade-in-up" style={{ animationDelay: '0.2s' }} aria-label="실시간 서비스 현황 요약">
               <div className="summary-container">
                 <div className="summary-item">
                   <span className="summary-label">채용공고 수</span>
@@ -181,7 +238,7 @@ function App() {
                     130,828<span className="summary-unit">건</span>
                   </div>
                   <div className="summary-footer-btn-wrapper">
-                    <button className="summary-action-btn" onClick={() => setShowJobPostings(true)}>확인하러 가기</button>
+                    <button className="summary-action-btn" onClick={() => setShowJobPostings(true)} aria-label="실시간 채용공고 팝업 열기">확인하러 가기</button>
                   </div>
                 </div>
                 <div className="summary-item">
@@ -190,16 +247,16 @@ function App() {
                     21,877<span className="summary-unit">건</span>
                   </div>
                   <div className="summary-footer-btn-wrapper">
-                    <button className="summary-action-btn" onClick={() => setShowEduPostings(true)}>확인하러 가기</button>
+                    <button className="summary-action-btn" onClick={() => setShowEduPostings(true)} aria-label="국비지원 교육 안내 팝업 열기">확인하러 가기</button>
                   </div>
                 </div>
               </div>
-            </div>
+            </section>
 
             {/* Job Section */}
-            <div className="filter-section animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+            <section className="filter-section animate-fade-in-up" style={{ animationDelay: '0.3s' }} aria-label="채용 정보 탐색 필터">
               <h2 className="section-title">채용 정보</h2>
-              <div className="filter-row">
+              <div className="filter-row" role="group" aria-label="채용 정보 필터링 옵션">
                 {jobFilters.map((filter, index) => (
                   <button 
                     key={index} 
@@ -213,18 +270,19 @@ function App() {
                         setFilterStep(1)
                       }
                     }}
+                    aria-label={`${filter} 채용 정보 보기`}
                   >
                     {filter}
                     <div className="arrow-icon"></div>
                   </button>
                 ))}
               </div>
-            </div>
+            </section>
 
             {/* Education Section */}
-            <div className="filter-section animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+            <section className="filter-section animate-fade-in-up" style={{ animationDelay: '0.4s' }} aria-label="교육 및 훈련 탐색 필터">
               <h2 className="section-title">교육·훈련</h2>
-              <div className="filter-row">
+              <div className="filter-row" role="group" aria-label="교육 및 훈련 필터링 옵션">
                 {eduFilters.map((filter, index) => (
                   <button 
                     key={index} 
@@ -233,19 +291,21 @@ function App() {
                       if (filter === '내일배움카드') setActiveInfoPopup('card')
                       if (filter === 'K-디지털 훈련') setActiveInfoPopup('digital')
                     }}
+                    aria-label={`${filter} 안내 보기`}
                   >
                     {filter}
                     <div className="arrow-icon"></div>
                   </button>
                 ))}
               </div>
-            </div>
+            </section>
           </div>
-        </div>
+        </main>
       </div>
 
-      <footer className="vibe-footer">
+      <footer className="vibe-footer" role="contentinfo" aria-label="고용24 하단 정보 및 약관">
         <div className="footer-top">
+
           <div className="footer-logo">
             <img src={`${import.meta.env.BASE_URL}user_logo.png?v=3`} alt="고용24" className="user-logo" />
             <span className="footer-logo-text">고용24</span>
